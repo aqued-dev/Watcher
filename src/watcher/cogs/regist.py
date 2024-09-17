@@ -2,16 +2,19 @@ import os
 import gspread
 from discord.ext import commands
 from oauth2client.service_account import ServiceAccountCredentials
+import dotenv
+
 
 class SheetCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        
+        dotenv.load_dotenv()
+
         scope = [
             "https://spreadsheets.google.com/feeds",
             "https://www.googleapis.com/auth/drive",
         ]
-        
+
         credentials = {
             "type": "service_account",
             "project_id": os.getenv("PROJECT_ID"),
@@ -24,17 +27,19 @@ class SheetCog(commands.Cog):
             "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
             "client_x509_cert_url": os.getenv("CLIENT_X509_CERT_URL"),
         }
-        
+
         creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials, scope)
         self.gc = gspread.authorize(creds)
-        
+
         self.SPREAD_SHEET_KEY = os.getenv("SPREAD_SHEET_KEY")
         self.workbook = self.gc.open_by_key(self.SPREAD_SHEET_KEY)
         self.worksheet = self.workbook.worksheets()[0]
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author.bot or message.channel.id != int(os.getenv("SHEET_CHANNEL_ID")):
+        if message.author.bot or message.channel.id != int(
+            os.getenv("SHEET_CHANNEL_ID")
+        ):
             return
 
         print(message.content)
