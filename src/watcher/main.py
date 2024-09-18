@@ -16,7 +16,7 @@ class Watcher(commands.Bot):
         intents.dm_messages = True
         intents.guild_messages = True
 
-        super().__init__(intents=intents, command_prefix=self.prefix())
+        super().__init__(intents=intents, command_prefix="aw.")
 
     async def setup_hook(self) -> None:
         for name in os.listdir("src/watcher/cogs"):
