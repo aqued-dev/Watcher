@@ -51,7 +51,7 @@ class SheetCog(commands.Cog):
             if not any(row):
                 next_empty_row = i + 1
 
-        self.worksheet.update_cell(next_empty_row, 1, message.content)
+        self.worksheet.update_cell(next_empty_row, 2, message.content)
 
 
 async def setup(bot):
